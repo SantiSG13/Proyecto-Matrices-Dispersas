@@ -1,29 +1,60 @@
 package matrices;
 
 import javax.swing.JOptionPane;
+import java.sql.SQLOutput;
+import java.util.Random;
 
 public class Principal {
 
     public static void main(String[] args) {
         int opc = 0;
+        int opc2 = 0;
 
-        int f = 4;
-        int c = 5;
-        //int filas = Integer.parseInt(JOptionPane.showInputDialog("Digite el nÃºmero de filas que quiere que tenga la matriz original: \n"));
-        //int columnas = Integer.parseInt(JOptionPane.showInputDialog("Digite el nÃºmero de columnas que quiere que tenga la matriz original: \n"));
-        int[][] matrizOriginal = new int[f][c];
-        LlenarMatriz(matrizOriginal);
+        int[][] matrizOriginal = {{10, 0, 0},{7, 0, 0},  {0, 1, 0},{0, 2, -6},{0, 0, -1}};
         MostrarMatriz(matrizOriginal);
+        Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, ContadorDatos(matrizOriginal));
 
-        //Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, 5);
-        //F1.Construir(matrizOriginal);
+//        int filas = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas: \n"));
+//        int columnas = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas: \n"));
+//        int[][] matrizOriginal = new int[filas][columnas];
+//        LlenarMatriz(matrizOriginal);
+//        MostrarMatriz(matrizOriginal);
+//
+//        int datos = ContadorDatos(matrizOriginal);
+//        Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, datos);
 
         do {
             opc = MenuFormas();
             switch (opc) {
                 case 1:
-                    //T1.Construir(matrizOriginal);
-                    //T1.Mostrar();
+                    T1.Construir(matrizOriginal);
+                    do {
+                        opc2 = SubMenu();
+                        switch (opc2) {
+                            case 1:
+                                T1.MostrarTripletaConStringBuilder("TRIPLETA        Fila    Columna   Dato\n");
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                break;
+                            case 5:
+                                break;
+                            case 6:
+                                break;
+                            case 7:
+                                break;
+                            case 8:
+                                break;
+                            case 0:
+                                JOptionPane.showMessageDialog(null, "Saliendo del submenú");
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida");
+                        }
+                    } while (opc2 != 0);
                     break;
                 case 2:
                     //F1.Construir(matrizOriginal);
@@ -33,41 +64,68 @@ public class Principal {
                     //F3.Construir(matrizOriginal);
                     //F3.Mostrar();
                     break;
-                case 4:
+                case 0:
                     JOptionPane.showMessageDialog(null, "Gracias por usar el programa");
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "OpciÃ³n invÃ¡lida");
+                    JOptionPane.showMessageDialog(null, "Opción inválida");
             }
         } while (opc != 0);
     }
 
     public static int MenuFormas() {
-        int opcion = Integer.parseInt(JOptionPane.showInputDialog("Digite la opciÃ³n que desea realizar: \n"
+        int opc = Integer.parseInt(JOptionPane.showInputDialog("Digite la opción que desea realizar: \n"
                 + "1. Tripleta \n"
                 + "2. Forma 1 \n"
                 + "3. Forma 3 \n"
-                + "4. Salir \n"));
-        return opcion;
+                + "0. Salir \n"));
+        return opc;
+    }
+
+    public static int SubMenu() {
+        int opc2 = Integer.parseInt(JOptionPane.showInputDialog("Digite la opción que desea realizar: \n"
+                + "1. Mostrar forma\n"
+                + "2. Sumar filas\n"
+                + "3. Sumar Columnas\n"
+                + "4. Insertar un dato\n"
+                + "5. Eliminar un dato\n"
+                + "6. Eliminar una posición\n"
+                + "7. Sumar dos matrices de la misma forma\n"
+                + "8. Multiplicar dos matrices de la misma forma\n"
+                + "0. Salir\n"));
+        return opc2;
     }
 
     public static void LlenarMatriz(int[][] matriz) {
-        matriz[0][0] = 1;
-        matriz[0][3] = 2;
-        matriz[1][1] = 3;
-        matriz[2][4] = -4;
-        matriz[3][0] = 5;
-        matriz[3][1] = -6;
-    }
-
-    public static void MostrarMatriz(int[][] matriz) {
+        Random r = new Random(); //Creamos una instancia de random
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
-                System.out.print(matriz[i][j] + "\t");
+                matriz[i][j] = r.nextInt(100);
             }
-            System.out.println();
         }
     }
 
+    public static void MostrarMatriz(int[][] matriz) {
+        System.out.println("---------------------");
+        for (int i = 0; i < matriz.length; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < matriz[i].length; j++) {
+                System.out.printf("%3d | ", matriz[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println("---------------------");
+    }
 
+    public static int ContadorDatos(int[][] matriz) {
+        int contador = 0;
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                if (matriz[i][j] != 0) {
+                    contador++;
+                }
+            }
+        }
+        return contador;
+    }
 }
