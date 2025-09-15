@@ -10,18 +10,15 @@ public class Principal {
         int opc = 0;
         int opc2 = 0;
 
-        int[][] matrizOriginal = {{10, 0, 0},{7, 0, 0},  {0, 1, 0},{0, 2, -6},{0, 0, -1}};
-        MostrarMatriz(matrizOriginal);
-        Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, ContadorDatos(matrizOriginal));
+        int filas = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas: \n"));
+        int columnas = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas: \n"));
 
-//        int filas = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas: \n"));
-//        int columnas = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas: \n"));
-//        int[][] matrizOriginal = new int[filas][columnas];
-//        LlenarMatriz(matrizOriginal);
-//        MostrarMatriz(matrizOriginal);
-//
-//        int datos = ContadorDatos(matrizOriginal);
-//        Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, datos);
+        int[][] matrizOriginal = new int[filas][columnas];
+        LlenarMatrizDispersa(matrizOriginal);
+        MostrarMatriz("Matriz original",matrizOriginal);
+
+        int datos = ContadorDatos(matrizOriginal);
+        Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, datos);
 
         do {
             opc = MenuFormas();
@@ -32,11 +29,13 @@ public class Principal {
                         opc2 = SubMenu();
                         switch (opc2) {
                             case 1:
-                                T1.MostrarTripletaConStringBuilder("TRIPLETA        Fila    Columna   Dato\n");
+                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
                                 break;
                             case 2:
+                                T1.SumarFilas();
                                 break;
                             case 3:
+                                T1.SumarColumnas();
                                 break;
                             case 4:
                                 break;
@@ -96,31 +95,48 @@ public class Principal {
         return opc2;
     }
 
-    public static void LlenarMatriz(int[][] matriz) {
-        Random r = new Random(); //Creamos una instancia de random
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
-                matriz[i][j] = r.nextInt(100);
+    public static void LlenarMatrizDispersa(int[][] matriz) {
+        Random r = new Random();
+
+        // Calcular el número total de posiciones y cuántas deben tener datos (40%)
+        int totalPosiciones = matriz.length * matriz[0].length;
+        int posicionesConDatos = totalPosiciones * 40 / 100;
+
+        // Seleccionar aleatoriamente las posiciones que tendrán datos
+        int datosColocados = 0;
+        while (datosColocados < posicionesConDatos) {
+            int filaAleatoria = r.nextInt(matriz.length);
+            int columnaAleatoria = r.nextInt(matriz[0].length);
+
+            // Solo colocar dato si la posición está vacía (es 0)
+            if (matriz[filaAleatoria][columnaAleatoria] == 0) {
+                // Generar número aleatorio entre -20 y 20 (excluyendo el 0)
+                int valor = 0;
+                while (valor == 0) {
+                    valor = r.nextInt(19) - 9; // Genera números entre -20 y 20
+                }
+                matriz[filaAleatoria][columnaAleatoria] = valor;
+                datosColocados++;
             }
         }
     }
 
-    public static void MostrarMatriz(int[][] matriz) {
-        System.out.println("---------------------");
+    public static void MostrarMatriz(String titulo, int[][] matriz) {
+        StringBuilder resul = new StringBuilder();
         for (int i = 0; i < matriz.length; i++) {
-            System.out.print("| ");
             for (int j = 0; j < matriz[i].length; j++) {
-                System.out.printf("%3d | ", matriz[i][j]);
+                resul.append(String.format("%8d  ", matriz[i][j]));
             }
-            System.out.println();
+            resul.append("\n");
         }
-        System.out.println("---------------------");
+        System.out.println(resul.toString());
+        JOptionPane.showMessageDialog(null, resul.toString(), titulo, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static int ContadorDatos(int[][] matriz) {
         int contador = 0;
         for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
+            for (int j = 0; j < matriz[0].length; j++) {
                 if (matriz[i][j] != 0) {
                     contador++;
                 }

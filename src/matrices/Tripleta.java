@@ -48,17 +48,7 @@ public class Tripleta {
         }
     }
 
-    public void MostrarTripleta() {
-        for (int i = 0; i < matrizTripleta.length; i++) {
-            System.out.print("| ");
-            for (int j = 0; j < matrizTripleta[0].length; j++) {
-                System.out.printf("%3d | ", matrizTripleta[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
-    public void MostrarTripletaConStringBuilder(String titulo) {
+    public void MostrarTripleta(String titulo) {
         StringBuilder resultado = new StringBuilder();
         for (int i = 0; i < matrizTripleta.length; i++) {
             for (int j = 0; j < matrizTripleta[0].length; j++) {
@@ -67,5 +57,39 @@ public class Tripleta {
             resultado.append("\n");
         }
         JOptionPane.showMessageDialog(null, resultado.toString(), titulo, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void SumarFilas() {
+        int[] vectorSumaFilas = new int[matrizTripleta[0][0]];
+
+        for (int k = 1; k <= matrizTripleta[0][2]; k++) {
+            vectorSumaFilas[matrizTripleta[k][0]] += matrizTripleta[k][2];
+        }
+
+        StringBuilder resultado2 = new StringBuilder();
+        resultado2.append("SUMA DE FILAS:\n\n");
+
+        for (int i = 0; i < vectorSumaFilas.length; i++) {
+            resultado2.append(String.format("Fila %2d: %4d\n", i, vectorSumaFilas[i]));
+        }
+
+        JOptionPane.showMessageDialog(null, resultado2.toString(), "Suma por Filas", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void SumarColumnas() {
+        int[] vectorSumaColumnas = new int[matrizTripleta[0][1]];
+
+        for (int k = 1; k <= matrizTripleta[0][2]; k++) {
+            vectorSumaColumnas[matrizTripleta[k][1]] += matrizTripleta[k][2];
+        }
+
+        StringBuilder resultado3 = new StringBuilder();
+        resultado3.append("SUMA DE COLUMNAS:\n\n");
+
+        for (int i = 0; i < vectorSumaColumnas.length; i++) {
+            resultado3.append(String.format("Columna %2d: %4d\n", i, vectorSumaColumnas[i]));
+        }
+
+        JOptionPane.showMessageDialog(null, resultado3.toString(), "Suma por Columnas", JOptionPane.INFORMATION_MESSAGE);
     }
 }
