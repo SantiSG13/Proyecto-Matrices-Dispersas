@@ -38,10 +38,17 @@ public class Principal {
                                 T1.SumarColumnas();
                                 break;
                             case 4:
+                                T1.InsertarDato();
+                                T1.OrdenarTripleta();
+                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
                                 break;
                             case 5:
+                                T1.EliminarDato();
+                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
                                 break;
                             case 6:
+                                T1.EliminarPosicion();
+                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
                                 break;
                             case 7:
                                 break;
@@ -98,22 +105,24 @@ public class Principal {
     public static void LlenarMatrizDispersa(int[][] matriz) {
         Random r = new Random();
 
-        // Calcular el número total de posiciones y cuántas deben tener datos (40%)
-        int totalPosiciones = matriz.length * matriz[0].length;
-        int posicionesConDatos = totalPosiciones * 40 / 100;
+        int porcentaje = Integer.parseInt(JOptionPane.showInputDialog("Digite el porcentaje de datos útiles que quiere para su matriz: "));
+        if (porcentaje < 1 || porcentaje > 100) {
+            JOptionPane.showMessageDialog(null, "Porcentaje inválido. Debe estar entre 1 y 100.");
+            porcentaje = 40;
+        }
 
-        // Seleccionar aleatoriamente las posiciones que tendrán datos
+        int totalPosiciones = matriz.length * matriz[0].length;
+        int posicionesConDatos = totalPosiciones * porcentaje / 100;
+
         int datosColocados = 0;
         while (datosColocados < posicionesConDatos) {
             int filaAleatoria = r.nextInt(matriz.length);
             int columnaAleatoria = r.nextInt(matriz[0].length);
 
-            // Solo colocar dato si la posición está vacía (es 0)
             if (matriz[filaAleatoria][columnaAleatoria] == 0) {
-                // Generar número aleatorio entre -20 y 20 (excluyendo el 0)
                 int valor = 0;
                 while (valor == 0) {
-                    valor = r.nextInt(19) - 9; // Genera números entre -20 y 20
+                    valor = r.nextInt(19) - 9;
                 }
                 matriz[filaAleatoria][columnaAleatoria] = valor;
                 datosColocados++;

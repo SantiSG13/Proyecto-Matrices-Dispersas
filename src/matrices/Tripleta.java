@@ -92,4 +92,135 @@ public class Tripleta {
 
         JOptionPane.showMessageDialog(null, resultado3.toString(), "Suma por Columnas", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public void InsertarDato() {
+        int filaDelnuevoDato = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la fila del nuevo dato (0 a " + (matrizTripleta[0][0] - 1) + "):"));
+        int columnaDelnuevoDato = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la columna del nuevo dato (0 a " + (matrizTripleta[0][1] - 1) + "):"));
+        int nuevoDato = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor del nuevo dato (diferente de 0):"));
+
+        if (filaDelnuevoDato < 0 || filaDelnuevoDato >= matrizTripleta[0][0] || columnaDelnuevoDato < 0 || columnaDelnuevoDato >= matrizTripleta[0][1]) {
+            JOptionPane.showMessageDialog(null, "Error: La fila o columna está fuera de los límites de la matriz original.");
+            return;
+        }
+        if (nuevoDato == 0) {
+            JOptionPane.showMessageDialog(null, "Error: El valor del nuevo dato debe ser diferente de 0.");
+            return;
+        }
+
+        if (matrizTripleta[filaDelnuevoDato][columnaDelnuevoDato] != 0) {
+            matrizTripleta[filaDelnuevoDato][columnaDelnuevoDato] += nuevoDato;
+        }
+        else {
+            int[][] nuevaMatrizTripleta = new int[matrizTripleta[0][2] + 2][3];
+
+            for (int i = 0; i <= matrizTripleta[0][2]; i++) {
+                for (int j = 0; j < 3; j++) {
+                    nuevaMatrizTripleta[i][j] = matrizTripleta[i][j];
+                }
+            }
+
+            nuevaMatrizTripleta[matrizTripleta[0][2] + 1][0] = filaDelnuevoDato;
+            nuevaMatrizTripleta[matrizTripleta[0][2] + 1][1] = columnaDelnuevoDato;
+            nuevaMatrizTripleta[matrizTripleta[0][2] + 1][2] += nuevoDato;
+            nuevaMatrizTripleta[0][2] = matrizTripleta[0][2] + 1;
+
+            matrizTripleta = nuevaMatrizTripleta;
+        }
+    }
+
+    public void OrdenarTripleta() {
+        int datos = matrizTripleta[0][2];
+        for (int i = 1; i < datos; i++) {
+            for (int j = i + 1; j <= datos; j++) {
+                int filaI = matrizTripleta[i][0];
+                int filaJ = matrizTripleta[j][0];
+                int colI = matrizTripleta[i][1];
+                int colJ = matrizTripleta[j][1];
+
+                if (filaI > filaJ || (filaI == filaJ && colI > colJ)) {
+                    // Intercambiar las tripletas
+                    for (int k = 0; k < 3; k++) {
+                        int temp = matrizTripleta[i][k];
+                        matrizTripleta[i][k] = matrizTripleta[j][k];
+                        matrizTripleta[j][k] = temp;
+                    }
+                }
+            }
+        }
+    }
+
+    public void EliminarDato() {
+        int dato = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el dato que quiere eliminar"));
+
+        int contadorDato = 0;
+        for (int k = 1; k <= matrizTripleta[0][2]; k++) {
+           if (matrizTripleta[k][2] == dato) {
+               contadorDato++;
+           }
+        }
+
+        if (contadorDato == 0) {
+            JOptionPane.showMessageDialog(null, "El dato no se encuentra en la tripleta");
+            return;
+        }
+
+        int[][] nuevaMatrizTripleta = new int[matrizTripleta[0][2] - contadorDato + 1][3];
+        nuevaMatrizTripleta[0][0] = matrizTripleta[0][0];
+        nuevaMatrizTripleta[0][1] = matrizTripleta[0][1];
+        nuevaMatrizTripleta[0][2] = matrizTripleta[0][2] - contadorDato;
+
+        int k = 1;
+        for (int i = 1; i <= matrizTripleta[0][2]; i++) {
+            if (matrizTripleta[i][2] != dato) {
+                nuevaMatrizTripleta[k][0] = matrizTripleta[i][0];
+                nuevaMatrizTripleta[k][1] = matrizTripleta[i][1];
+                nuevaMatrizTripleta[k][2] = matrizTripleta[i][2];
+                k++;
+            }
+        }
+
+        matrizTripleta = nuevaMatrizTripleta;
+        JOptionPane.showMessageDialog(null, "El dato ha sido eliminado correctamente");
+    }
+
+    public void EliminarPosicion() {
+        int fila = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la fila a eliminar (0 a " + (matrizTripleta[0][0] - 1) + "):"));
+        int columna = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la columna a eliminar (0 a " + (matrizTripleta[0][1] - 1) + "):"));
+
+        if (fila < 0 || fila >= matrizTripleta[0][0] || columna < 0 || columna >= matrizTripleta[0][1]) {
+            JOptionPane.showMessageDialog(null, "Error: La fila o columna está fuera de los límites.");
+            return;
+        }
+
+        boolean posicionEncontrada = false;
+        for (int k = 1; k <= matrizTripleta[0][2]; k++) {
+            if (matrizTripleta[k][0] == fila && matrizTripleta[k][1] == columna) {
+                posicionEncontrada = true;
+                break;
+            }
+        }
+
+        if (!posicionEncontrada) {
+            JOptionPane.showMessageDialog(null, "No existe dato en esa posición.");
+            return;
+        }
+
+        int[][] nuevaMatrizTripleta = new int [matrizTripleta[0][2]] [3];
+        nuevaMatrizTripleta[0][0] = matrizTripleta[0][0];
+        nuevaMatrizTripleta[0][1] = matrizTripleta[0][1];
+        nuevaMatrizTripleta[0][2] = matrizTripleta[0][2] - 1;
+
+        int k = 1;
+        for (int i = 1; i <= matrizTripleta[0][2]; i++) {
+            if (matrizTripleta[i][0] != fila || matrizTripleta[i][1] != columna) {
+                nuevaMatrizTripleta[k][0] = matrizTripleta[i][0];
+                nuevaMatrizTripleta[k][1] = matrizTripleta[i][1];
+                nuevaMatrizTripleta[k][2] = matrizTripleta[i][2];
+                k++;
+            }
+        }
+
+        matrizTripleta = nuevaMatrizTripleta;
+        JOptionPane.showMessageDialog(null, "Dato eliminado en la posición indicada.");
+    }
 }
