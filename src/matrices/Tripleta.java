@@ -223,4 +223,12 @@ public class Tripleta {
         matrizTripleta = nuevaMatrizTripleta;
         JOptionPane.showMessageDialog(null, "Dato eliminado en la posición indicada.");
     }
+
+    public void SumarMatricesTripleta(Tripleta T2) {
+    }
+
+    public void MultiplicarMatricesTripleta(Tripleta T3) {
+    }
+
+
 }

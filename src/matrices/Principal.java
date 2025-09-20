@@ -1,7 +1,6 @@
 package matrices;
 
 import javax.swing.JOptionPane;
-import java.sql.SQLOutput;
 import java.util.Random;
 
 public class Principal {
@@ -51,8 +50,30 @@ public class Principal {
                                 T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
                                 break;
                             case 7:
+                                int filas2 = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas de la segunda matriz: \n"));
+                                int columnas2 = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas de la segunda matriz: \n"));
+
+                                int[][] matrizOriginal2 = new int[filas2][columnas2];
+                                LlenarMatrizDispersa(matrizOriginal2);
+                                MostrarMatriz("Matriz original", matrizOriginal2);
+
+                                int datos2 = ContadorDatos(matrizOriginal);
+                                Tripleta T2 = new Tripleta(matrizOriginal2.length, matrizOriginal2[0].length, datos2);
+
+                                T1.SumarMatricesTripleta(T2);
                                 break;
                             case 8:
+                                int filas3 = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas de la segunda matriz: \n"));
+                                int columnas3 = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas de la segunda matriz: \n"));
+
+                                int[][] matrizOriginal3 = new int[filas3][columnas3];
+                                LlenarMatrizDispersa(matrizOriginal3);
+                                MostrarMatriz("Matriz original", matrizOriginal3);
+
+                                int datos3 = ContadorDatos(matrizOriginal);
+                                Tripleta T3 = new Tripleta(matrizOriginal3.length, matrizOriginal3[0].length, datos3);
+
+                                T1.MultiplicarMatricesTripleta(T3);
                                 break;
                             case 0:
                                 JOptionPane.showMessageDialog(null, "Saliendo del submenú");
