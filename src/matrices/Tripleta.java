@@ -21,7 +21,7 @@ public class Tripleta {
 
     //Setters
     public void setMatrizTripleta(int[][] matrizTripleta) {
-        this.matrizTripleta = matrizTripleta;
+        matrizTripleta = matrizTripleta;
     }
 
     //Getters sobrecarga para un dato puntual
@@ -228,7 +228,62 @@ public class Tripleta {
     }
 
     public void MultiplicarMatricesTripleta(Tripleta T3) {
+        int filasInicialesA = matrizTripleta[0][0];
+        int columnasInicialesA = matrizTripleta[0][1];
+        int filasInicialesB = T3.matrizTripleta[0][0];
+        int columnasInicialesB = T3.matrizTripleta[0][1];
+        
+        if (columnasInicialesA != filasInicialesB) {
+            JOptionPane.showMessageDialog(null, "Error: Las matrices no son compatibles para multiplicación. Columnas de A (" + columnasInicialesA + ") es diferente de Filas de B (" + filasInicialesB + ").", "Matrices Incompatibles", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Proceder con la multiplicación
+        int filasResultado = filasInicialesA;
+        int columnasResultado = columnasInicialesB;
+
+        // Crear matriz temporal para almacenar el resultado denso (pequeña y simple)
+        int[][] matrizTemporal = new int[filasResultado][columnasResultado];
+
+        // Para cada elemento no cero en A y B
+        for (int i = 1; i <= matrizTripleta[0][2]; i++) {
+            int filaA = matrizTripleta[i][0];
+            int columnaA = matrizTripleta[i][1];
+            int valorA = matrizTripleta[i][2];
+
+            for (int j = 1; j <= T3.matrizTripleta[0][2]; j++) {
+                int filaB = T3.matrizTripleta[j][0];
+                int columnaB = T3.matrizTripleta[j][1];
+                int valorB = T3.matrizTripleta[j][2];
+
+                if (columnaA == filaB) {
+                    matrizTemporal[filaA][columnaB] += valorA * valorB;
+                }
+            }
+        }
+
+        // Contar elementos no ceros
+        int datosNoCeros = 0;
+        for (int i = 0; i < filasResultado; i++) {
+            for (int j = 0; j < columnasResultado; j++) {
+                if (matrizTemporal[i][j] != 0) datosNoCeros++;
+            }
+        }
+
+        // Crear tripleta resultado
+        Tripleta nuevaMatrizTripleta = new Tripleta(filasResultado, columnasResultado, datosNoCeros);
+        int k = 1;
+        for (int i = 0; i < filasResultado; i++) {
+            for (int j = 0; j < columnasResultado; j++) {
+                if (matrizTemporal[i][j] != 0) {
+                    nuevaMatrizTripleta.matrizTripleta[k][0] = i;
+                    nuevaMatrizTripleta.matrizTripleta[k][1] = j;
+                    nuevaMatrizTripleta.matrizTripleta[k][2] = matrizTemporal[i][j];
+                    k++;
+                }
+            }
+        }
+
+        matrizTripleta = nuevaMatrizTripleta.matrizTripleta;
     }
-
-
 }
