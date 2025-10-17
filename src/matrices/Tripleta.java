@@ -21,7 +21,7 @@ public class Tripleta {
 
     //Setters
     public void setMatrizTripleta(int[][] matrizTripleta) {
-        this.matrizTripleta = matrizTripleta;
+        matrizTripleta = matrizTripleta;
     }
 
     //Getters sobrecarga para un dato puntual
@@ -107,25 +107,75 @@ public class Tripleta {
             return;
         }
 
-        if (matrizTripleta[filaDelnuevoDato][columnaDelnuevoDato] != 0) {
-            matrizTripleta[filaDelnuevoDato][columnaDelnuevoDato] += nuevoDato;
-        }
-        else {
-            int[][] nuevaMatrizTripleta = new int[matrizTripleta[0][2] + 2][3];
+        int datos = matrizTripleta[0][2];
+        // 1) Buscar si ya existe la posición; si existe sumar y eliminar si queda 0
+        for (int k = 1; k <= datos; k++) {
+            if (matrizTripleta[k][0] == filaDelnuevoDato && matrizTripleta[k][1] == columnaDelnuevoDato) {
+                matrizTripleta[k][2] += nuevoDato;
+                // Si la suma da 0, eliminar esa tripleta
+                if (matrizTripleta[k][2] == 0) {
+                    int[][] nuevaMatricesTripleta = new int[datos][3]; // datos-1 + 1 para encabezado
+                    nuevaMatricesTripleta[0][0] = matrizTripleta[0][0];
+                    nuevaMatricesTripleta[0][1] = matrizTripleta[0][1];
+                    nuevaMatricesTripleta[0][2] = datos - 1;
 
-            for (int i = 0; i <= matrizTripleta[0][2]; i++) {
-                for (int j = 0; j < 3; j++) {
-                    nuevaMatrizTripleta[i][j] = matrizTripleta[i][j];
+                    int l = 1;
+                    for (int m = 1; m <= datos; m++) {
+                        if (m == k) {
+                            continue;
+                        }
+                        nuevaMatricesTripleta[l][0] = matrizTripleta[m][0];
+                        nuevaMatricesTripleta[l][1] = matrizTripleta[m][1];
+                        nuevaMatricesTripleta[l][2] = matrizTripleta[m][2];
+                        l++;
+                    }
+                    matrizTripleta = nuevaMatricesTripleta;
                 }
+                return;
             }
-
-            nuevaMatrizTripleta[matrizTripleta[0][2] + 1][0] = filaDelnuevoDato;
-            nuevaMatrizTripleta[matrizTripleta[0][2] + 1][1] = columnaDelnuevoDato;
-            nuevaMatrizTripleta[matrizTripleta[0][2] + 1][2] += nuevoDato;
-            nuevaMatrizTripleta[0][2] = matrizTripleta[0][2] + 1;
-
-            matrizTripleta = nuevaMatrizTripleta;
         }
+
+        // 2) No existe: insertar en orden (fila, luego columna)
+        int[][] nuevaMatrizTripleta = new int[datos + 2][3]; // +1 para encabezado, +1 para nuevo dato
+        nuevaMatrizTripleta[0][0] = matrizTripleta[0][0];
+        nuevaMatrizTripleta[0][1] = matrizTripleta[0][1];
+        nuevaMatrizTripleta[0][2] = datos + 1;
+
+        // Determinar posición de inserción (pos entre 1 y datos+1)
+        int pos = 1;
+        while (pos <= datos) {
+            int fil = matrizTripleta[pos][0];
+            int col = matrizTripleta[pos][1];
+            if (filaDelnuevoDato < fil || (filaDelnuevoDato == fil && columnaDelnuevoDato < col)) {
+                break; // Encontrada la posición
+            }
+            pos++;
+        }
+
+        // Copiar elementos hasta pos-1
+        int w = 1;
+        for (int i = 1; i < pos; i++) {
+            nuevaMatrizTripleta[w][0] = matrizTripleta[i][0];
+            nuevaMatrizTripleta[w][1] = matrizTripleta[i][1];
+            nuevaMatrizTripleta[w][2] = matrizTripleta[i][2];
+            w++;
+        }
+
+        // Insertar el nuevo dato en w
+        nuevaMatrizTripleta[w][0] = filaDelnuevoDato;
+        nuevaMatrizTripleta[w][1] = columnaDelnuevoDato;
+        nuevaMatrizTripleta[w][2] = nuevoDato;
+        w++;
+
+        // Copiar el resto
+        for (int i = pos; i <= datos; i++) {
+            nuevaMatrizTripleta[w][0] = matrizTripleta[i][0];
+            nuevaMatrizTripleta[w][1] = matrizTripleta[i][1];
+            nuevaMatrizTripleta[w][2] = matrizTripleta[i][2];
+            w++;
+        }
+
+        matrizTripleta = nuevaMatrizTripleta;
     }
 
     public void OrdenarTripleta() {
@@ -225,10 +275,64 @@ public class Tripleta {
     }
 
     public void SumarMatricesTripleta(Tripleta T2) {
+        int [][] A = this.matrizTripleta;
+        int [][] B = T2.matrizTripleta;
+        int filas = A[0][0];
+        int columnas = A[0][1];
+
+        int[][] matrizAuxiliar = new int[filas][columnas];
+        // 1. Copiar los valores de A
+        for (int i = 1; i <= A[0][2]; i++) {
+            matrizAuxiliar[A[i][0]][A[i][1]] = A[i][2];
+        }
+        // 2. Sumar los valores de B
+        for (int j = 1; j <= B[0][2]; j++) {
+            matrizAuxiliar[B[j][0]][B[j][1]] += B[j][2];
+        }
+
+        int datosNoCeros = 0;
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (matrizAuxiliar[i][j] != 0) {
+                    datosNoCeros++;
+                }
+            }
+        }
+
+        Tripleta nuevaTripleta = new Tripleta(filas, columnas, datosNoCeros);
+        nuevaTripleta.Construir(matrizAuxiliar);
+
+        this.matrizTripleta = nuevaTripleta.getMatrizTripleta();
     }
 
     public void MultiplicarMatricesTripleta(Tripleta T3) {
+        int[][] A = this.matrizTripleta;
+        int[][] B = T3.matrizTripleta;
+
+        int filasResultado = A[0][0];
+        int columnasResultado = B[0][1];
+
+        int matrizAuxiliar[][] = new int[filasResultado][columnasResultado];
+        for (int i = 1; i <= A[0][2]; i++) {
+            for (int j = 1; j <= B[0][2]; j++) {
+                if (A[i][1] == B[j][0]) {
+                    matrizAuxiliar[A[i][0]][B[j][1]] += A[i][2] * B[j][2];
+                }
+            }
+        }
+
+        int datosNoCeros = 0;
+        for (int i = 0; i < matrizAuxiliar.length; i++) {
+            for (int j = 0; j < matrizAuxiliar[0].length; j++) {
+                if (matrizAuxiliar[i][j] != 0) {
+                    datosNoCeros++;
+                }
+            }
+        }
+
+        Tripleta nuevaTripleta = new Tripleta(filasResultado, columnasResultado, datosNoCeros);
+        nuevaTripleta.Construir(matrizAuxiliar);
+
+        this.matrizTripleta = nuevaTripleta.getMatrizTripleta();
     }
-
-
 }
