@@ -38,7 +38,6 @@ public class Principal {
                                 break;
                             case 4:
                                 T1.InsertarDato();
-                                T1.OrdenarTripleta();
                                 T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
                                 break;
                             case 5:
@@ -50,8 +49,18 @@ public class Principal {
                                 T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
                                 break;
                             case 7:
-                                int filasB = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas de la matriz B: \n"));
-                                int columnasB = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas de la matriz B: \n"));
+                                int FilasA = T1.getMatrizTripleta(0,0);
+                                int ColumnasA = T1.getMatrizTripleta(0,1);
+
+                                int filasB, columnasB;
+                                do {
+                                    filasB = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas de la matriz B: \n"));
+                                    columnasB = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas de la matriz B: \n"));
+
+                                    if (FilasA != filasB || ColumnasA != columnasB) {
+                                        JOptionPane.showMessageDialog(null, "Matrices incompatibles: filas de A (" + FilasA + ") deben ser iguales a filas de B (" + filasB + ") y columnas de A (" + ColumnasA + ") deben ser iguales a columnas de B (" + columnasB + ").\nIntente de nuevo.", "Suma no posible", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } while (FilasA != filasB || ColumnasA != columnasB);
 
                                 int[][] matrizOriginalB = new int[filasB][columnasB];
                                 LlenarMatrizDispersa(matrizOriginalB);
@@ -62,9 +71,10 @@ public class Principal {
                                 T2.Construir(matrizOriginalB);
 
                                 T1.SumarMatricesTripleta(T2);
+                                T1.MostrarTripleta("RESULTADO    Fila    Columna   Dato\n");
                                 break;
                             case 8:
-                                int columnasA = T1.getMatrizTripleta()[0][1];
+                                int columnasA = T1.getMatrizTripleta(0,1);
 
                                 int filasC, columnasC;
                                 do {
@@ -138,7 +148,7 @@ public class Principal {
     public static void LlenarMatrizDispersa(int[][] matriz) {
         Random r = new Random();
 
-        int porcentaje = Integer.parseInt(JOptionPane.showInputDialog("Digite el porcentaje de datos útiles que quiere para su matriz: "));
+        int porcentaje = Integer.parseInt(JOptionPane.showInputDialog("Digite el porcentaje de datos útiles que quiere para su matriz (Por ejemplo 40): "));
         if (porcentaje < 1 || porcentaje > 100) {
             JOptionPane.showMessageDialog(null, "Porcentaje inválido. Debe estar entre 1 y 100.");
             porcentaje = 40;
