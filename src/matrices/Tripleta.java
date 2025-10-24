@@ -21,7 +21,7 @@ public class Tripleta {
 
     //Setters
     public void setMatrizTripleta(int[][] matrizTripleta) {
-        matrizTripleta = matrizTripleta;
+        this.matrizTripleta = matrizTripleta;
     }
 
     //Getters sobrecarga para un dato puntual
@@ -307,16 +307,16 @@ public class Tripleta {
 
     public void MultiplicarMatricesTripleta(Tripleta T3) {
         int[][] A = this.matrizTripleta;
-        int[][] B = T3.matrizTripleta;
+        int[][] C = T3.matrizTripleta;
 
         int filasResultado = A[0][0];
-        int columnasResultado = B[0][1];
+        int columnasResultado = C[0][1];
 
         int matrizAuxiliar[][] = new int[filasResultado][columnasResultado];
         for (int i = 1; i <= A[0][2]; i++) {
-            for (int j = 1; j <= B[0][2]; j++) {
-                if (A[i][1] == B[j][0]) {
-                    matrizAuxiliar[A[i][0]][B[j][1]] += A[i][2] * B[j][2];
+            for (int j = 1; j <= C[0][2]; j++) {
+                if (A[i][1] == C[j][0]) {
+                    matrizAuxiliar[A[i][0]][C[j][1]] += A[i][2] * C[j][2];
                 }
             }
         }

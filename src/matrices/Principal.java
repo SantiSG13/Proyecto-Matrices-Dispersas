@@ -16,13 +16,12 @@ public class Principal {
         LlenarMatrizDispersa(matrizOriginal);
         MostrarMatriz("Matriz original",matrizOriginal);
 
-        int datos = ContadorDatos(matrizOriginal);
-        Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, datos);
-
         do {
             opc = MenuFormas();
             switch (opc) {
                 case 1:
+                    int datos = ContadorDatos(matrizOriginal);
+                    Tripleta T1 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, datos);
                     T1.Construir(matrizOriginal);
                     do {
                         opc2 = SubMenu();
@@ -106,8 +105,41 @@ public class Principal {
                     } while (opc2 != 0);
                     break;
                 case 2:
-                    //F1.Construir(matrizOriginal);
-                    //F1.Mostrar();
+                    Forma1 F1 = new Forma1();
+                    F1.Construir(matrizOriginal);
+                    do {
+                        opc2 = SubMenu();
+                        switch (opc2) {
+                            case 1:
+                                F1.MostrarForma1();
+                                break;
+                            case 2:
+                                F1.SumarFilasForma1();
+                                break;
+                            case 3:
+                                F1.SumarColumnasForma1();
+                                break;
+                            case 4:
+                                int fila1 = Integer.parseInt(JOptionPane.showInputDialog("Digite la fila del nuevo nodo: \n"));
+                                int columna1 = Integer.parseInt(JOptionPane.showInputDialog("Digite la columna del nuevo nodo: \n"));
+                                int dato1 = Integer.parseInt(JOptionPane.showInputDialog("Digite el dato del nuevo nodo: \n"));
+                                F1.InsertarDatoForma1(fila1, columna1, dato1);
+                                F1.MostrarForma1();
+                                break;
+                            case 5:
+                                int dato2 = Integer.parseInt(JOptionPane.showInputDialog("Digite el dato que desea eliminar: \n"));
+                                F1.EliminarDatoForma1(dato2);
+                                F1.MostrarForma1();
+                                break;
+                            case 6:
+                                break;
+                            case 0:
+                                JOptionPane.showMessageDialog(null, "Saliendo del submenú");
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida");
+                        }
+                    } while (opc2 != 0);
                     break;
                 case 3:
                     //F3.Construir(matrizOriginal);
