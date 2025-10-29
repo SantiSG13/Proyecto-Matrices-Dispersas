@@ -27,7 +27,7 @@ public class Principal {
                         opc2 = SubMenu();
                         switch (opc2) {
                             case 1:
-                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
+                                T1.MostrarTripleta();
                                 break;
                             case 2:
                                 T1.SumarFilas();
@@ -37,15 +37,15 @@ public class Principal {
                                 break;
                             case 4:
                                 T1.InsertarDato();
-                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
+                                T1.MostrarTripleta();
                                 break;
                             case 5:
                                 T1.EliminarDato();
-                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
+                                T1.MostrarTripleta();
                                 break;
                             case 6:
                                 T1.EliminarPosicion();
-                                T1.MostrarTripleta("TRIPLETA        Fila    Columna   Dato\n");
+                                T1.MostrarTripleta();
                                 break;
                             case 7:
                                 int FilasA = T1.getMatrizTripleta(0,0);
@@ -70,7 +70,7 @@ public class Principal {
                                 T2.Construir(matrizOriginalB);
 
                                 T1.SumarMatricesTripleta(T2);
-                                T1.MostrarTripleta("RESULTADO    Fila    Columna   Dato\n");
+                                T1.MostrarTripleta();
                                 break;
                             case 8:
                                 int columnasA = T1.getMatrizTripleta(0,1);
@@ -94,7 +94,7 @@ public class Principal {
                                 T3.Construir(matrizOriginalC);
 
                                 T1.MultiplicarMatricesTripleta(T3);
-                                T1.MostrarTripleta("RESULTADO    Fila    Columna   Dato\n");
+                                T1.MostrarTripleta();
                                 break;
                             case 0:
                                 JOptionPane.showMessageDialog(null, "Saliendo del submenú");
@@ -131,7 +131,9 @@ public class Principal {
                                 F1_A.MostrarForma1PorColumnas();
                                 break;
                             case 6:
-                                F1_A.EliminarPosicionForma1();
+                                int fila = Integer.parseInt(JOptionPane.showInputDialog("Digite la fila del nodo que desea eliminar (entre 0 y " + (matrizOriginal.length - 1) + "):"));
+                                int columna = Integer.parseInt(JOptionPane.showInputDialog("Digite la columna del nodo que desea eliminar (entre 0 y " + (matrizOriginal[0].length - 1) + "):"));
+                                F1_A.EliminarPosicionForma1(fila, columna);
                                 F1_A.MostrarForma1PorFilas();
                                 F1_A.MostrarForma1PorColumnas();
                                 break;
@@ -192,8 +194,94 @@ public class Principal {
                     } while (opc2 != 0);
                     break;
                 case 3:
-                    //F3.Construir(matrizOriginal);
-                    //F3.Mostrar();
+                    Forma2 F2 = new Forma2();
+                    F2.ConstruirForma2(matrizOriginal);
+                    do {
+                        opc2 = SubMenu();
+                        switch (opc2) {
+                            case 1:
+                                F2.MostrarForma2PorFilas();
+                                F2.MostrarForma2PorColumnas();
+                                break;
+                            case 2:
+                                F2.SumarFilasForma2();
+                                break;
+                            case 3:
+                                F2.SumarColumnasForma2();
+                                break;
+                            case 4:
+                                F2.InsertarDatoForma2();
+                                F2.MostrarForma2PorFilas();
+                                F2.MostrarForma2PorColumnas();
+                                break;
+                            case 5:
+                                F2.EliminarDatoForma2();
+                                F2.MostrarForma2PorFilas();
+                                F2.MostrarForma2PorColumnas();
+                                break;
+                            case 6:
+                                int fila = Integer.parseInt(JOptionPane.showInputDialog("Digite la fila del nodo que desea eliminar (entre 0 y " + (matrizOriginal.length - 1) + "):"));
+                                int columna = Integer.parseInt(JOptionPane.showInputDialog("Digite la columna del nodo que desea eliminar (entre 0 y " + (matrizOriginal[0].length - 1) + "):"));
+                                F2.EliminarPosicionForma2(fila, columna);
+                                F2.MostrarForma2PorFilas();
+                                F2.MostrarForma2PorColumnas();
+                                break;
+                            case 7:
+                                int FilasA = F2.getCabeza().getFila();
+                                int ColumnasA = F2.getCabeza().getColumna();
+
+                                int FilasB, ColumnasB;
+                                do {
+                                    FilasB = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas de la matriz B : \n"));
+                                    ColumnasB = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas de la matriz B : \n"));
+
+                                    if (FilasA != FilasB || ColumnasA != ColumnasB) {
+                                        JOptionPane.showMessageDialog(null, "Matrices incompatibles: filas de A (" + FilasA + ") deben ser iguales a filas de B (" + FilasB + ") y columnas de A (" + ColumnasA + ") deben ser iguales a columnas de B (" + ColumnasB + ").\nIntente de nuevo.", "Suma no posible", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } while (FilasA != FilasB || ColumnasA != ColumnasB);
+
+                                int[][] matrizOriginalB = new int[FilasB][ColumnasB];
+                                LlenarMatrizDispersa(matrizOriginalB);
+                                MostrarMatriz("Matriz original B", matrizOriginalB);
+
+                                Forma2 F2_B = new Forma2();
+                                F2_B.ConstruirForma2(matrizOriginalB);
+
+                                F2.SumarMatricesForma2(F2_B);
+                                F2.MostrarForma2PorFilas();
+                                F2.MostrarForma2PorColumnas();
+                                break;
+                            case 8:
+                                int columnasA = F2.getCabeza().getColumna();
+
+                                int filasC, columnasC;
+                                do{
+                                    filasC = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas de la matriz C: \n"));
+                                    columnasC = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas de la matriz C: \n"));
+                                    if (columnasA != filasC) {
+                                        JOptionPane.showMessageDialog(null, "Matrices incompatibles: columnas de A (" + columnasA + ") deben ser iguales a filas de C (" + filasC + ").\nIntente de nuevo.", "Multiplicación no posible", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                } while (columnasA != filasC);
+
+                                int[][] matrizOriginalC = new int[filasC][columnasC];
+                                LlenarMatrizDispersa(matrizOriginalC);
+                                MostrarMatriz("Matriz original C", matrizOriginalC);
+
+                                Forma2 F2_C = new Forma2();
+                                F2_C.ConstruirForma2(matrizOriginalC);
+
+                                F2.MultiplicarMatricesForma2(F2_C);
+                                F2.MostrarForma2PorFilas();
+                                F2.MostrarForma2PorColumnas();
+                                break;
+                            case 0:
+                                JOptionPane.showMessageDialog(null, "Saliendo del submenú");
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida");
+                        }
+
+                    } while (opc2 != 0);
                     break;
                 case 0:
                     JOptionPane.showMessageDialog(null, "Gracias por usar el programa");
@@ -208,7 +296,7 @@ public class Principal {
         int opc = Integer.parseInt(JOptionPane.showInputDialog("Digite la opción que desea realizar: \n"
                 + "1. Tripleta \n"
                 + "2. Forma 1 \n"
-                + "3. Forma 3 \n"
+                + "3. Forma 2 \n"
                 + "0. Salir \n"));
         return opc;
     }

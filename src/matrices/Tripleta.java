@@ -48,7 +48,7 @@ public class Tripleta {
         }
     }
 
-    public void MostrarTripleta(String titulo) {
+    public void MostrarTripleta() {
         StringBuilder resultado = new StringBuilder();
         for (int i = 0; i < matrizTripleta.length; i++) {
             for (int j = 0; j < matrizTripleta[0].length; j++) {
@@ -56,7 +56,7 @@ public class Tripleta {
             }
             resultado.append("\n");
         }
-        JOptionPane.showMessageDialog(null, resultado.toString(), titulo, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, resultado.toString(), "TRIPLETA        Fila    Columna   Dato\n", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void SumarFilas() {

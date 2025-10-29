@@ -21,7 +21,7 @@ public class Forma1 {
     // Construir Forma 1
     //--------------------------------------------------
     public void Construir(int[][] matrizOriginal) {
-        // Implementación para construir la Forma 1 a partir de la matriz original
+        //Inicializar nodo cabeza
         Nodo actual = new Nodo (matrizOriginal.length, matrizOriginal[0].length, 0);
         cabeza = actual;
 
@@ -101,6 +101,8 @@ public class Forma1 {
         Nodo siguienteFila = actualFilaRc.getLigaFila();
         StringBuilder salida = new StringBuilder();
 
+        salida.append("MATRIZ %d x %d:\n\n", cabeza.getFila(), cabeza.getColumna());
+
         while (registroCabeza != cabeza) {
             salida.append("Fila ")
                     .append(registroCabeza.getColumna())
@@ -143,6 +145,8 @@ public class Forma1 {
         Nodo actualColumnaRc = cabeza.getLiga();
         Nodo siguienteColumna = actualColumnaRc.getLigaColumna();
         StringBuilder salida = new StringBuilder();
+
+        salida.append("MATRIZ %d x %d:\n\n", cabeza.getFila(), cabeza.getColumna());
 
         while (registroCabeza != cabeza) {
             salida.append("Columna ")
@@ -253,6 +257,10 @@ public class Forma1 {
                 while (actual != registroCabeza) {
                     if (actual.getColumna() == columna) {
                         actual.setDato(actual.getDato() + dato); //Sumar al dato existente
+                        if (actual.getDato() == 0) {
+                            EliminarPosicionForma1(fila, columna);
+                            JOptionPane.showMessageDialog(null, "El nodo en la posición (" + fila + ", " + columna + ") ha sido eliminado porque su valor es cero.", "Nodo Eliminado", JOptionPane.INFORMATION_MESSAGE);
+                        }
                         return;
                     }
                     if (actual.getColumna() > columna) {
@@ -261,7 +269,7 @@ public class Forma1 {
                     anterior = actual;
                     actual = actual.getLigaFila();
                 }
-                // Enlazar las ligaa de las filas
+                // Enlazar las liga de las filas
                 anterior.setLigaFila(nuevoNodo);
                 nuevoNodo.setLigaFila(actual);
                 break;
@@ -303,57 +311,49 @@ public class Forma1 {
             return;
         }
 
-        boolean encontrado = false;
+        // Buscar todos los nodos con ese dato y guardar sus posiciones
         Nodo registroCabeza = cabeza.getLiga();
+        int nodosEliminados = 0;
 
+        // Recorrer todas las filas
         while (registroCabeza != cabeza) {
-            // Eliminar de la fila
-            Nodo anterior = registroCabeza;
-            Nodo actual = registroCabeza.getLigaFila();
+            if (registroCabeza.getFila() >= 0) {  // Es un registro de fila
+                Nodo actual = registroCabeza.getLigaFila();
 
-            while (actual != registroCabeza) {
-                if (actual.getDato() == dato) {
-                    anterior.setLigaFila(actual.getLigaFila());
-                    encontrado = true;
-                    actual = anterior.getLigaFila();
-                } else {
-                    anterior = actual;
-                    actual = actual.getLigaFila();
+                while (actual != registroCabeza) {
+                    if (actual.getDato() == dato) {
+                        int fila = actual.getFila();
+                        int columna = actual.getColumna();
+
+                        // Guardar el siguiente nodo antes de eliminar
+                        Nodo siguiente = actual.getLigaFila();
+
+                        // Eliminar el nodo
+                        EliminarPosicionForma1(fila, columna);
+
+                        nodosEliminados++;
+
+                        // Continuar con el siguiente nodo
+                        actual = siguiente;
+                    } else {
+                        actual = actual.getLigaFila();
+                    }
                 }
             }
-
-            // Eliminar de la columna
-            anterior = registroCabeza;
-            actual = registroCabeza.getLigaColumna();
-
-            while (actual != registroCabeza) {
-                if (actual.getDato() == dato) {
-                    anterior.setLigaColumna(actual.getLigaColumna());
-                    actual = anterior.getLigaColumna();
-                } else {
-                    anterior = actual;
-                    actual = actual.getLigaColumna();
-                }
-            }
-
             registroCabeza = registroCabeza.getLiga();
         }
 
-        if (encontrado) {
-            JOptionPane.showMessageDialog(null, "Dato(s) eliminado(s)");
+        if (nodosEliminados > 0) {
+            JOptionPane.showMessageDialog(null, "Se eliminaron " + nodosEliminados + " nodo(s) con el dato " + dato + ".", "Nodos Eliminados", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "Dato no encontrado");
+            JOptionPane.showMessageDialog(null, "No se encontró ningún nodo con el dato " + dato + ".", "Sin Coincidencias", JOptionPane.WARNING_MESSAGE);
         }
     }
 
     //--------------------------------------------------
     // Eliminar posición en la Forma 1
     //--------------------------------------------------
-    public void EliminarPosicionForma1() {
-        int fila = Integer.parseInt(JOptionPane.showInputDialog("Digite la fila del nodo que desea eliminar (entre 0 y " + (cabeza.getFila() - 1) + "):"));
-        int columna = Integer.parseInt(JOptionPane.showInputDialog("Digite la columna del nodo que desea eliminar (entre 0 y " + (cabeza.getColumna() - 1) + "):"));
-
-        boolean encontrado = false;
+    public void EliminarPosicionForma1(int fila, int columna) {
         Nodo registroCabeza = cabeza.getLiga();
 
         while (registroCabeza != cabeza) {
@@ -365,7 +365,6 @@ public class Forma1 {
                 while (actual != registroCabeza) {
                     if (actual.getColumna() == columna) {
                         anterior.setLigaFila(actual.getLigaFila());
-                        encontrado = true;
                         break;
                     }
                     anterior = actual;
@@ -389,12 +388,6 @@ public class Forma1 {
             }
 
             registroCabeza = registroCabeza.getLiga();
-        }
-
-        if (encontrado) {
-            JOptionPane.showMessageDialog(null, "Posición eliminada");
-        } else {
-            JOptionPane.showMessageDialog(null, "Posición no encontrada o sin dato en esa posición");
         }
     }
 
