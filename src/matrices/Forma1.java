@@ -463,6 +463,37 @@ public class Forma1 {
         Forma1 resultado = new Forma1();
         resultado.Construir(matrizResultado);
         cabeza = resultado.getCabeza();
-
     }
+
+    //------------------------------------------------------------------
+    // Multiplicar Tripleta y Forma 2 y guardarlo como un forma 1
+    //------------------------------------------------------------------
+    public void MultiplicarTripletaConForma2(Tripleta Tripleta, Forma2 Forma2) {
+        int[][] tripleta = Tripleta.getMatrizTripleta();
+        int filasResultado = tripleta[0][0];
+        int columnasResultado = Forma2.getCabeza().getColumna();
+        int[][] matrizResultado = new int[filasResultado][columnasResultado];
+
+        for (int i = 1; i <= tripleta[0][2]; i++) {
+            int filaTripleta = tripleta[i][0];
+            int columnaTripleta = tripleta[i][1];
+            int datoTripleta = tripleta[i][2];
+
+            Nodo registroCabezaForma2 = Forma2.getCabeza().getLigaFila();
+            while (registroCabezaForma2 != Forma2.getCabeza()) {
+                if (registroCabezaForma2.getFila() == columnaTripleta) {
+                    int columnaForma2 = registroCabezaForma2.getColumna();
+                    int datoForma2 = registroCabezaForma2.getDato();
+
+                    matrizResultado[filaTripleta][columnaForma2] += datoTripleta * datoForma2;
+                }
+                registroCabezaForma2 = registroCabezaForma2.getLigaFila();
+            }
+        }
+
+        Forma1 resultado = new Forma1();
+        resultado.Construir(matrizResultado);
+        cabeza = resultado.getCabeza();
+    }
+
 }

@@ -283,6 +283,37 @@ public class Principal {
 
                     } while (opc2 != 0);
                     break;
+                case 4:
+                    int datos4 = ContadorDatos(matrizOriginal);
+                    Tripleta T4 = new Tripleta(matrizOriginal.length, matrizOriginal[0].length, datos4);
+                    T4.Construir(matrizOriginal);
+
+                    int columnasA_T4 = T4.getMatrizTripleta(0,1);
+
+                    int filas2, columnas2;
+                    do {
+                        JOptionPane.showMessageDialog(null, "Digite la segunda matriz para la multiplicación (Forma 2)");
+                        filas2 = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de filas de la matriz B: \n"));
+                        columnas2 = Integer.parseInt(JOptionPane.showInputDialog("Digite el número de columnas de la matriz B: \n"));
+
+                        if (columnasA_T4 != filas2) {
+                            JOptionPane.showMessageDialog(null, "Matrices incompatibles: columnas de A (" + columnasA_T4 + ") deben ser iguales a filas de B (" + filas2 + ").\nIntente de nuevo.", "Multiplicación no posible", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } while (columnasA_T4 != filas2);
+
+                    int[][] matrizOriginal2 = new int[filas2][columnas2];
+                    LlenarMatrizDispersa(matrizOriginal2);
+                    MostrarMatriz("Matriz original B",matrizOriginal2);
+
+                    Forma2 F2_4 = new Forma2();
+                    F2_4.ConstruirForma2(matrizOriginal2);
+
+                    Forma1 F1_resultado = new Forma1();
+                    F1_resultado.MultiplicarTripletaConForma2(T4, F2_4);
+                    F1_resultado.MostrarForma1PorFilas();
+                    F1_resultado.MostrarForma1PorColumnas();
+
+                    break;
                 case 0:
                     JOptionPane.showMessageDialog(null, "Gracias por usar el programa");
                     break;
@@ -297,6 +328,7 @@ public class Principal {
                 + "1. Tripleta \n"
                 + "2. Forma 1 \n"
                 + "3. Forma 2 \n"
+                + "4. Tripleta * Forma 2 = Forma 1\n"
                 + "0. Salir \n"));
         return opc;
     }
